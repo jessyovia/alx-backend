@@ -18,12 +18,12 @@ class FIFOCache(BaseCaching):
         """ Add an item to the cache
         """
         if key and item:
-            if key in self.cache_data:
-                self.order.move_to_end(key)
-            elif len(self.cache_data) >= BaseCaching.MAX_ITEMS:
+        if key in self.cache_data:
+        self.order.move_to_end(key)
+        elif len(self.cache_data) >= BaseCaching.MAX_ITEMS:
                 discarded = self.order.popitem(last=False)
                 print(f"DISCARD: {discarded[0]}")
-                self.cache_data.pop(discarded[0])
+            self.cache_data.pop(discarded[0])
             self.cache_data[key] = item
             self.order[key] = None
 
