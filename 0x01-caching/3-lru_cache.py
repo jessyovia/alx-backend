@@ -1,36 +1,34 @@
 #!/usr/bin/env python3
-""" LRUCache module
-"""
+
+
+"""LRUCache Module"""
+
+
 from base_caching import BaseCaching
 from collections import OrderedDict
 
-class LRUCache(BaseCaching):
-    """ LRUCache class inherits from BaseCaching
-    """
 
+class LRUCache(BaseCaching):
+    """LRUCache class - LRU caching system"""
     def __init__(self):
-        """ Initialize
-        """
+        """Initialize LRUCache"""
         super().__init__()
-        self.order = OrderedDict()
+        self.cache_data = OrderedDict()
 
     def put(self, key, item):
-        """ Add an item to the cache
-        """
-        if key and item:
-            if key in self.cache_data:
-                self.order.move_to_end(key)
-            elif len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-                discarded = self.order.popitem(last=False)
-                print(f"DISCARD: {discarded[0]}")
-                self.cache_data.pop(discarded[0])
-            self.cache_data[key] = item
-            self.order[key] = None
+        """Adds item in the cache"""
+        if key is None or item is None:
+            return
+        self.cache_data[key] = item
+
+        if len(self.cache_data) > BaseCaching.MAX_ITEMS:
+            lru, _ = self.cache_data.popitem(last=False)
+            print(f"DISCARD: {lru}")
 
     def get(self, key):
-        """ Get an item from the cache
-        """
+        """Gets item by key"""
         if key is None or key not in self.cache_data:
             return None
-        self.order.move_to_end(key)
-        return self.cache_data[key]
+        u = self.cache_data.pop(key)
+        self.cache_data[key] = u
+        return u

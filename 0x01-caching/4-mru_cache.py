@@ -1,36 +1,35 @@
 #!/usr/bin/env python3
-""" MRUCache module
-"""
+
+
+"""MRUCache Module"""
+
+
 from base_caching import BaseCaching
+from collections import OrderedDict
+
 
 class MRUCache(BaseCaching):
-    """ MRUCache class inherits from BaseCaching
-    """
-
+    """MRUCache class - MRU caching system"""
     def __init__(self):
-        """ Initialize
-        """
+        """Initialize MRUCache"""
         super().__init__()
-        self.order = []
+        self.cache_data = OrderedDict()
 
     def put(self, key, item):
-        """ Add an item to the cache
-        """
-        if key and item:
-            if key in self.cache_data:
-                self.order.remove(key)
-            elif len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-                discarded = self.order.pop()
-                print(f"DISCARD: {discarded}")
-                self.cache_data.pop(discarded)
+        """Adds item in the cache"""
+        if key is None or item is None:
+            return
+        if key not in self.cache_data:
+            if len(self.cache_data) + 1 > BaseCaching.MAX_ITEMS:
+                mru, _ = self.cache_data.popitem(False)
+                print("DISCARD:", mru)
             self.cache_data[key] = item
-            self.order.append(key)
+            self.cache_data.move_to_end(key, last=False)
+        else:
+            self.cache_data[key] = item
 
     def get(self, key):
-        """ Get an item from the cache
-        """
-        if key is None or key not in self.cache_data:
-            return None
-        self.order.remove(key)
-        self.order.append(key)
-        return self.cache_data[key]
+        """Gets item by key"""
+        if key is not None and key in self.cache_data:
+            self.cache_data.move_to_end(key, last=False)
+        return self.cache_data.get(key, None)
