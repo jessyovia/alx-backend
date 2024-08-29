@@ -6,13 +6,7 @@
 
 ## Authors
 
-- Orji David
-- orjidavid0063@gmail.com
-
-
-## 🔗 Github Profile
-
-- [@Dayvid0063](https://github.com/Dayvid0063)
+- Jessica Oviahon
 
 
 ## Project Released By
